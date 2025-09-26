@@ -1,4 +1,4 @@
-# 🌐 OSI Model – Introduction
+# OSI Model – Introduction
 
 ## 1. What is OSI Model?
 The **OSI Model (Open Systems Interconnection)** is a **conceptual framework** that explains how different networking functions work together.  
@@ -6,7 +6,7 @@ The **OSI Model (Open Systems Interconnection)** is a **conceptual framework** t
 - It splits communication into **7 logical layers**, each with a specific role.  
 - Ensures everyone talks in the same "language" when building or troubleshooting networks.  
 
-👉 Instead of thinking *“the Internet is magic”*, OSI says:  
+Instead of thinking *“the Internet is magic”*, OSI says:  
 **Break it into steps: from raw wires → to apps like Google Chrome.**  
 
 ---
@@ -24,10 +24,10 @@ Each layer talks only to:
 - The **layer above it** → to pass data upward.  
 - The **layer below it** → to deliver data downward.  
 
-📦 **Data flow:**  
+**Data flow:**  
 - Down the stack on the **sender** → across the network → up the stack on the **receiver**.  
 
-📬 **Analogy (parcel delivery system):**
+**Analogy (parcel delivery system):**
 - Layer 1 = road  
 - Layer 2 = local post office  
 - Layer 3 = city-wide routing  
@@ -59,19 +59,19 @@ Each layer talks only to:
 
 ---
 
-# 🧩 Layer 1 – Physical Layer (OSI Model)
+# Layer 1 – Physical Layer (OSI Model)
 
-## 1. Definition
+### 1. Definition
 The **Physical Layer** defines how raw **bits (1s and 0s)** are transmitted across a medium:  
 - Copper cables  
 - Fiber optic  
 - Wireless (radio, Wi-Fi)  
 
-👉 At this layer:  
+At this layer:  
 - `1` → +5 volts on copper / light pulse in fiber / radio burst in Wi-Fi  
 - `0` → 0 volts / no light pulse / silence in radio  
 
-⚡ **Key point:** The Physical Layer **doesn’t care about meaning** — only whether a signal exists or not.  
+**Key point:** The Physical Layer **doesn’t care about meaning** — only whether a signal exists or not.  
 
 ---
 
@@ -86,7 +86,7 @@ Examples of **Layer 1 failures**:
 - Damaged fiber  
 - Weak Wi-Fi signal  
 
-💡 **Troubleshooting rule:** Always check the physical first:  
+**Troubleshooting rule:** Always check the physical first:  
 - Is the **link light ON**?  
 - Is the **cable plugged in**?  
 
@@ -125,7 +125,7 @@ Example:
 - Cloud provider status update:  
   *“Connectivity degraded due to fiber cut between datacenters.”* → That’s a **Layer 1 failure**.  
 
-💡 As a DevOps/Cloud engineer:  
+As a DevOps/Cloud engineer:  
 - You won’t repair cables.  
 - But you must **understand Layer 1 issues** for root cause analysis.
 
@@ -137,9 +137,9 @@ If you spin up 2 VMs in AWS:
 - But AWS data centers connect racks with **fiber optics**.  
 - A **fiber break between AZs (Availability Zones)** = connectivity issues.  
 
-👉 Even “virtual” networking is built on **physical bits** at Layer 1.  
+Even “virtual” networking is built on **physical bits** at Layer 1.  
 
-⚡ **Knife-truth takeaway**:  
+**Knife-truth takeaway**:  
 Layer 1 = **pure signals**.  
 - No IP  
 - No MAC  
@@ -149,7 +149,7 @@ Just **energy on a medium**. Everything else in networking depends on this invis
 
 ---
 
-## 🖧 Layer 2 – Data Link Layer
+# Layer 2 – Data Link Layer
 
 ### 1. Definition
 The **Data Link Layer** organizes raw bits from Layer 1 into **frames** that computers can understand.  
@@ -159,65 +159,65 @@ Think of it as the **traffic controller**:
 - Uses **MAC addresses** (unique NIC IDs).  
 - Prevents raw electrical chaos.  
 
-👉 Divided into two sublayers:  
+Divided into two sublayers:  
 - **LLC (Logical Link Control):** Talks to Layer 3 (Network).  
 - **MAC (Media Access Control):** Handles physical addressing and medium access.  
 
 ---
 
-### 2. Why it Matters
+## 2. Why it Matters
 Without Layer 2, devices on the same LAN couldn’t tell **who is sending/receiving**.  
 
 - Ensures **device-to-device delivery** inside the same network.  
 - Prevents collisions (multiple devices talking at once).  
 - Enables switches to forward traffic intelligently.  
 
-💡 **Cloud tie**: When you create a **VPC** (Virtual Private Cloud) or subnet in AWS, Layer 2 concepts (MAC, switching, VLANs) are **virtualized**, but the logic is the same.  
+**Cloud tie**: When you create a **VPC** (Virtual Private Cloud) or subnet in AWS, Layer 2 concepts (MAC, switching, VLANs) are **virtualized**, but the logic is the same.  
 
 ---
 
-### 3. Key Points (Details)
+## 3. Key Points (Details)
 
 - **Unit of data:** Frames  
 
-#### Addressing
+### Addressing
 - Each NIC has a **MAC address** (48-bit, e.g., `00:1A:2B:3C:4D:5E`)  
   - First 3 bytes (OUI) = Vendor ID  
   - Last 3 bytes = Unique device ID  
 
-#### Devices at this layer
+### Devices at this layer
 - **Switches** → forward frames using MAC addresses  
 - **Bridges** → connect LAN segments  
 - **NICs**  
 
-#### Collision Domains
+### Collision Domains
 - Old **hubs** (Layer 1) caused collisions  
 - **Switches** eliminate collisions → each port = isolated  
 
-#### Error Detection
+### Error Detection
 - Adds **Frame Check Sequence (CRC)** at end of frames  
 - Receiver verifies → if mismatch, discard the frame  
 
 ---
 
-### 4. Real-World / Cloud Tie
+## 4. Real-World / Cloud Tie
 
-#### Switching in Data Centers
+### Switching in Data Centers
 - Every rack has a **Top-of-Rack (ToR) Switch** (Layer 2)  
 - That’s how servers inside a cloud subnet communicate  
 
-#### Virtualization
+### Virtualization
 - In VMware, KVM, or AWS → each VM gets a **virtual NIC with a MAC address**  
 - Hypervisor or virtual switch (like **Open vSwitch**) handles Layer 2 traffic  
 
-#### VLANs
+### VLANs
 - Cloud providers use **VLAN tagging** internally to isolate tenants  
 
-💡 Even in the cloud, Layer 2 **switching + MAC addressing** is always happening under the hood.  
+Even in the cloud, Layer 2 **switching + MAC addressing** is always happening under the hood.  
 
 ---
 
-### 5. Examples
+## 5. Examples
 
 **Example 1: File copy on local LAN**  
 - Laptop copies file to another PC in office  
@@ -237,7 +237,7 @@ Without Layer 2, devices on the same LAN couldn’t tell **who is sending/receiv
 
 ---
 
-⚡ **Knife-truth takeaway**:  
+**Knife-truth takeaway**:  
 - **Layer 1** → moves raw signals  
 - **Layer 2** → organizes signals into **frames** and assigns identity (MAC)  
 
@@ -246,15 +246,15 @@ Now we know **who sent it** and **where it goes**.
 
 ---
 
-# 🌍 Layer 3 – Network Layer (OSI Model)
+# Layer 3 – Network Layer (OSI Model)
 
-## 1. Definition
+### 1. Definition
 The **Network Layer** is where networking escapes the local neighborhood (LAN) and goes **global**.  
 This layer answers two critical questions:  
 1. **Where is the destination device located?** (addressing)  
 2. **How do we get there?** (routing)  
 
-👉 In simple words:  
+In simple words:  
 - **Layer 2** = “This MAC is in my street.”  
 - **Layer 3** = “This IP is in another city. Which roads lead there?”  
 
@@ -269,7 +269,7 @@ Without Layer 3, the **Internet wouldn’t exist** — you’d only talk to neig
 - Provides **logical addressing (IP addresses)**.  
 - Handles **routing decisions** through routers.  
 
-💡 **Cloud tie**: When you create **subnets, VPCs, route tables, VPNs, load balancers** → you are configuring **Layer 3 magic**.  
+**Cloud tie**: When you create **subnets, VPCs, route tables, VPNs, load balancers** → you are configuring **Layer 3 magic**.  
 
 ---
 
@@ -312,11 +312,11 @@ Without Layer 3, the **Internet wouldn’t exist** — you’d only talk to neig
 - **Routing tables** → decide packet flow between subnets, NAT, and Internet Gateway.  
 - **VPNs** → extend private Layer 3 networks securely across the Internet.  
 
-💡 Example (AWS EC2 from laptop):  
+Example (AWS EC2 from laptop):  
 - Laptop has an **IP (public/private)**  
 - AWS instance has a **private IP**  
 - **AWS Internet Gateway + NAT** maps them together  
-👉 That’s pure **Layer 3** in action.  
+That’s pure **Layer 3** in action.  
 
 ---
 
@@ -326,7 +326,7 @@ Without Layer 3, the **Internet wouldn’t exist** — you’d only talk to neig
 - Laptop IP: `192.168.1.10`  
 - Destination: `142.250.77.206` (Google server)  
 - Packet created → router checks table → forwards to ISP → Internet routers → Google’s router.  
-👉 Each **hop** = one router making a **Layer 3 decision**.  
+Each **hop** = one router making a **Layer 3 decision**.  
 
 ---
 
@@ -339,7 +339,7 @@ Routing table:
 - `0.0.0.0/0` → Internet Gateway (public traffic)  
 - `10.0.2.0/24` → NAT Gateway  
 
-👉 That’s **Layer 3 routing** in action.  
+That’s **Layer 3 routing** in action.  
 
 ---
 
@@ -350,7 +350,7 @@ Routing table:
 
 ---
 
-⚡ **Knife-truth takeaway**:  
+**Knife-truth takeaway**:  
 - **Layer 2 = who you are (MAC)**  
 - **Layer 3 = where you live (IP)**  
 
@@ -359,17 +359,17 @@ Without Layer 3 → no Internet, no cloud, no global connectivity.
 ---
 
 
-# 🗂️ Layer 5 – Session Layer (OSI Model)
+# Layer 5 – Session Layer (OSI Model)
 
 ## 1. Definition
 The **Session Layer** is responsible for **starting, managing, and ending communication sessions** between applications.  
 
-👉 Think of it as the **meeting coordinator**:  
+Think of it as the **meeting coordinator**:  
 - Opens the session (handshake)  
 - Keeps it alive (synchronization, checkpoints)  
 - Closes it properly when done  
 
-📌 Difference from Transport Layer:  
+Difference from Transport Layer:  
 - **Layer 4 (Transport)** → delivers data to the right **application**  
 - **Layer 5 (Session)** → ensures conversations between applications are **stable and managed**  
 
@@ -380,7 +380,7 @@ Example: downloading a large file over a flaky connection
 - If connection drops halfway → you don’t want to restart from scratch  
 - **Session Layer allows checkpoints/resume** → continue from where you left off  
 
-💡 **Cloud tie**:  
+**Cloud tie**:  
 - Protocols like **TLS, gRPC, WebSockets** use **session-layer concepts**, even if merged into other layers in practice  
 
 ---
@@ -439,13 +439,13 @@ Upload 2 GB file to **AWS S3**:
 
 ---
 
-# 🎭 Layer 6 – Presentation Layer (OSI Model)
+# Layer 6 – Presentation Layer (OSI Model)
 
 ## 1. Definition
 The **Presentation Layer** is the **translator** of the OSI model.  
 Its role: ensure that the data sent by an application on one system can be **understood** by the application on the other system.  
 
-👉 Three main tasks:  
+Three main tasks:  
 - **Translation** → different encodings (ASCII, EBCDIC, Unicode)  
 - **Encryption/Decryption** → secure data for transmission  
 - **Compression/Decompression** → efficient transfer  
@@ -462,7 +462,7 @@ Example:
 - Another expects **XML**  
 - Without translation → communication fails  
 
-💡 **Cloud tie**: Every modern secure service uses Layer 6 concepts:  
+**Cloud tie**: Every modern secure service uses Layer 6 concepts:  
 - **TLS encryption**  
 - **JSON/XML/ProtoBuf encoding**  
 - **Data compression** (gzip, Brotli, zstd)  
@@ -519,11 +519,11 @@ Visiting `https://aws.amazon.com`
 - Compression → H.264, VP9 (reduces file size)  
 - Decompression → your device plays watchable video  
 
-👉 Without compression, streaming would need **10x more bandwidth**  
+Without compression, streaming would need **10x more bandwidth**  
 
 ---
 
-⚡ **Knife-truth takeaway**:  
+**Knife-truth takeaway**:  
 Layer 6 = the **“make it readable and secure” guy**.  
 - Doesn’t care about **delivery** (Layer 4/5).  
 - Cares about **format + safety** of data.
@@ -531,7 +531,7 @@ Layer 6 = the **“make it readable and secure” guy**.
 ---
 
 
-# 🌐 Layer 7 – Application Layer (OSI Model)
+# Layer 7 – Application Layer (OSI Model)
 
 ## 1. Definition
 The **Application Layer** is the closest layer to the **end-user**.  
@@ -556,7 +556,7 @@ This is the layer recruiters **actually ask about**.
   - Website not loading → is DNS resolving?  
   - HTTPS cert expired?  
 
-💡 Mastering Layer 7 lets you debug **70% of real-world network issues**.  
+Mastering Layer 7 lets you debug **70% of real-world network issues**.  
 
 ---
 
@@ -610,7 +610,7 @@ This is the layer recruiters **actually ask about**.
 
 ---
 
-⚡ **Knife-truth takeaway**:  
+**Knife-truth takeaway**:  
 - **Layer 7 is the face of networking** → where humans & apps touch the network.  
 - Every **cloud job** = daily battle with **Layer 7 protocols**.  
 - If you can debug **DNS, HTTP, HTTPS certs, and API calls**, you’re already in the **top 20% of candidates**.
@@ -618,6 +618,61 @@ This is the layer recruiters **actually ask about**.
 
 
 
+
+
+
+# Theory Foundations  
+
+Welcome to the **Theory Foundations** section of my Networking & Cloud learning journey.  
+This part focuses on **core networking theory** — the building blocks behind every real-world cloud, DevOps, or IT system.  
+
+While cloud platforms (AWS, Azure, GCP) provide managed services, the fundamentals below explain **why things work** and how to **troubleshoot when they don’t**.  
+
+---
+
+## Structure  
+
+Each folder in this section explores one major area of networking:  
+
+---
+
+### Network Models  
+- [OSI Seven Layers](./network-models/osi-seven-layers.md) → Classic 7-layer model for conceptual understanding.  
+- [TCP/IP Five Layers](./network-models/tcpip-five-layers.md) → The real-world Internet model.  
+
+---
+
+### Addressing  
+- [IPv4 Addressing](./addressing/ipv4-addressing.md) → Classes, private/public ranges, calculations.  
+- [IPv6 Fundamentals](./addressing/ipv6-fundamentals.md) → Structure, importance, transition.  
+- [Subnetting & CIDR](./addressing/subnetting-and-cidr.md) → VLSM, efficient IP design, CIDR blocks.  
+
+---
+
+### Switching & Routing  
+- [Ethernet & Switching](./switching-routing/ethernet-and-switching.md) → Layer 2, MAC, VLANs, STP.  
+- [Routing Protocols](./switching-routing/routing-protocols.md) → OSPF, BGP, RIP explained in detail.  
+- [TCP & UDP](./switching-routing/tcp-and-udp.md) → Transport protocols deep dive.  
+
+---
+
+### Network Services  
+- [DNS Resolution](./network-services/dns-resolution.md) → How domains resolve into IPs.  
+- [DHCP & NAT](./network-services/dhcp-and-nat.md) → IP assignment, translation scenarios.  
+- [VPN Technologies](./network-services/vpn-technologies.md) → IPSec, SSL, tunneling methods.  
+
+---
+
+### Security  
+- [Network Security](./security/network-security.md) → Firewalls, ACLs, zones, best practices.  
+
+---
+
+### Modern Networking  
+- [Wireless Networking](./modern-networking/wireless-networking.md) → Wi-Fi standards, security.  
+- [Cloud Networking](./modern-networking/cloud-networking.md) → VPCs, SDN, service meshes.  
+- [Network Automation](./modern-networking/network-automation.md) → APIs, IaC, automation tools.  
+- [Modern Protocols](./modern-networking/modern-protocols.md) → HTTP/2, HTTP/3, QUIC, gRPC.  
 
 
 
